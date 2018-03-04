@@ -46,35 +46,42 @@ class App extends Component {
           <h1 className="App-title">Print Manager</h1>
         </header>
         <ReactTable
-        data={data}
-        filterable
-        defaultFilterMethod={(filter, row) => String(row[filter.id]) === filter.value}
-        columns={[
-          {
-            Header: "Id",
-            accessor: "id"
-          },
-          {
-            Header: "Name",
-            accessor: "name"
-          },
-          {
-            Header: "Status",
-            accessor: "status"
-          },
-          {
-            Header: "IP address",
-            accessor: "ipAddress"
-          },
-          {
-            Header: "Permissions",
-            accessor: "permissions"
-          },
+          data={data}
+          filterable
+          getTrProps={(state, rowInfo, column, instance) => {
+            return {
+              onClick: (e) => {
+                console.log(rowInfo.original)
+              }
+            }
+          }}
+          defaultFilterMethod={(filter, row) => String(row[filter.id]) === filter.value}
+          columns={[
+            {
+              Header: "Id",
+              accessor: "id"
+            },
+            {
+              Header: "Name",
+              accessor: "name"
+            },
+            {
+              Header: "Status",
+              accessor: "status"
+            },
+            {
+              Header: "IP address",
+              accessor: "ipAddress"
+            },
+            {
+              Header: "Permissions",
+              accessor: "permissions"
+            },
 
-        ]}
-        defaultPageSize={10}
-        className="-striped -highlight"
-      />
+          ]}
+          defaultPageSize={10}
+          className="-striped -highlight"
+        />
       </div>
     );
   }
