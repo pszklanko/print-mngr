@@ -12,9 +12,15 @@ class App extends Component {
       activePrinter: {},
     }
   }
-  
+
   handleModalClose() {
-    this.setState({show: false})
+    console.log('zamknij')
+    this.setState({ show: false })
+  }
+
+  handleModalSubmit(data) {
+    console.log(data);
+    this.handleModalClose();
   }
 
   render() {
@@ -63,7 +69,7 @@ class App extends Component {
           getTrProps={(state, rowInfo, column, instance) => {
             return {
               onClick: (e) => {
-                this.setState({show: true, activePrinter: rowInfo.original})
+                this.setState({ show: true, activePrinter: rowInfo.original })
               }
             }
           }}
@@ -94,7 +100,11 @@ class App extends Component {
           defaultPageSize={10}
           className="-striped -highlight"
         />
-        <FormModal show={this.state.show} data={this.state.activePrinter} onClose={() => this.handleModalClose()} /> 
+        <FormModal
+          show={this.state.show}
+          data={this.state.activePrinter}
+          onSubmit={data => this.handleModalSubmit(data)}
+          onClose={() => this.handleModalClose()} />
       </div>
     );
   }
