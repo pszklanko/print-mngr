@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
-
+import { FormModal } from './FormModal'
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      show: false,
+      activePrinter: {},
+    }
+  }
+  
+  handleModalClose() {
+    this.setState({show: false})
+  }
+
   render() {
     const data = [
       {
@@ -51,11 +63,11 @@ class App extends Component {
           getTrProps={(state, rowInfo, column, instance) => {
             return {
               onClick: (e) => {
-                console.log(rowInfo.original)
+                this.setState({show: true, activePrinter: rowInfo.original})
               }
             }
           }}
-          defaultFilterMethod={(filter, row) => String(row[filter.id]) === filter.value}
+          defaultFilterMethod={(filter, row) => String(row[filter.id]).includes(filter.value)}
           columns={[
             {
               Header: "Id",
@@ -82,6 +94,7 @@ class App extends Component {
           defaultPageSize={10}
           className="-striped -highlight"
         />
+        <FormModal show={this.state.show} data={this.state.activePrinter} onClose={() => this.handleModalClose()} /> 
       </div>
     );
   }
