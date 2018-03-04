@@ -3,3 +3,11 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+input, textarea {
+  display: block;
+  margin: 5px;
+}
+input[type=radio] {
+  display: inline-block;
+  margin: 5px;
+}
