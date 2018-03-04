@@ -10,61 +10,71 @@ class App extends Component {
     this.state = {
       show: false,
       activePrinter: {},
+      data: [
+        {
+          id: 1,
+          name: 'printer01',
+          status: 'idle',
+          ipAddress: '192.168.43.07',
+          description: 'my printer',
+          permissions: 'admin',
+        },
+        {
+          id: 2,
+          name: 'best printer',
+          status: 'broken',
+          ipAddress: '192.168.42.01',
+          description: 'bla bla bla',
+          permissions: 'all',
+        },
+        {
+          id: 3,
+          name: 'pink printer',
+          status: 'printing',
+          ipAddress: '192.168.03.04',
+          description: 'wnfeown w ef oenf oeiwnfe',
+          permissions: 'group',
+        },
+        {
+          id: 4,
+          name: 'ewqpj wwqpoidjiw dqwdw',
+          status: 'disconnected',
+          ipAddress: '192.168.32.11',
+          description: 'qwe wqeqw efwefwefew',
+          permissions: 'all',
+        }
+      ]
     }
   }
 
+  updatePrinterList(newData) {
+    let tmpArray = this.state.data.slice();
+    let elementIndex = this.state.data.findIndex(element => element.id === newData.id);
+    tmpArray[elementIndex] = newData;
+    this.setState({ data: tmpArray })
+  }
+
+  addPrinter(newData) {
+    this.setState(prevState => ({data: [...prevState.data, newData]}))    
+  }
+
   handleModalClose() {
-    console.log('zamknij')
     this.setState({ show: false })
   }
 
-  handleModalSubmit(data) {
-    console.log(data);
+  handleModalSubmit(newData) {
+    this.updatePrinterList(newData)
     this.handleModalClose();
   }
 
   render() {
-    const data = [
-      {
-        id: 1,
-        name: 'printer01',
-        status: 'idle',
-        ipAddress: '192.168.43.07',
-        description: 'my printer',
-        permissions: 'admin',
-      },
-      {
-        id: 2,
-        name: 'best printer',
-        status: 'broken',
-        ipAddress: '192.168.42.01',
-        description: 'bla bla bla',
-        permissions: 'all',
-      },
-      {
-        id: 3,
-        name: 'pink printer',
-        status: 'printing',
-        ipAddress: '192.168.03.04',
-        description: 'wnfeown w ef oenf oeiwnfe',
-        permissions: 'group',
-      },
-      {
-        id: 4,
-        name: 'ewqpj wwqpoidjiw dqwdw',
-        status: 'disconnected',
-        ipAddress: '192.168.32.11',
-        description: 'qwe wqeqw efwefwefew',
-        permissions: 'all',
-      }
-    ]
     return (
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">Print Manager</h1>
         </header>
         <ReactTable
-          data={data}
+          data={this.state.data}
           filterable
           getTrProps={(state, rowInfo, column, instance) => {
             return {
