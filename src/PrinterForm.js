@@ -5,6 +5,9 @@ export class PrinterForm extends Component {
     handleSubmit(submittedValues) {
         this.props.onSubmit(submittedValues)
     }
+    handleRemove() {
+        this.props.onRemove()
+    }
     render() {
         const validateName = value => !value || value.trim() === '' ? 'Name is a required field' : null
         const validateIpAddress = value => !value || value.trim() === '' ? 'IP address is a required field' : null
@@ -29,7 +32,7 @@ export class PrinterForm extends Component {
                             </div>
                             <div className={'form-group'}>
                                 <label htmlFor="status" className="mb-4 control-label">Status</label>
-                                <Text field="status" id="status" className="form-control" disabled/>
+                                <Text field="status" id="status" className="form-control" disabled />
                             </div>
                             <RadioGroup field="permissions">
                                 <label htmlFor="admin" className="mr-2">Admin</label>
@@ -41,11 +44,21 @@ export class PrinterForm extends Component {
                             </RadioGroup>
                             <div className={'form-group'}>
                                 <label htmlFor="description" className="mb-4 control-label">Description</label>
-                                <TextArea field="description" id="description" className="form-control"/>
+                                <TextArea field="description" id="description" className="form-control" />
                             </div>
-                            <button disabled={formApi.errors} type="submit" className="mb-4 btn btn-primary">
+                            {
+                                this.props.data.status ? (
+                                    <button type="button" onClick={() => this.handleRemove()} className="mb-4 btn btn-danger">
+                                        Remove
+                                    </button>
+                                ) : (
+                                        ''
+                                    )
+                            }
+                            <button disabled={formApi.errors} type="submit" className="mb-4 pull-right btn btn-primary">
                                 Submit
-                </button>
+                            </button>
+                            <div className={'clearfix'}></div>
                         </form>
                     )
                 }

@@ -46,33 +46,45 @@ class App extends Component {
       ]
     }
   }
-
   updatePrinterList(newData) {
-    let tmpArray = this.state.data.slice();
+    let tmpArray = [...this.state.data];
     let elementIndex = this.state.data.findIndex(element => element.id === newData.id);
-    tmpArray[elementIndex] = newData;
+    if (elementIndex >= 0) {
+      tmpArray[elementIndex] = newData;
+    } else {
+      newData.status = 'idle'
+      tmpArray.push(newData);
+    }
     this.setState({ data: tmpArray })
   }
-
-  addPrinter(newData) {
-    this.setState(prevState => ({data: [...prevState.data, newData]}))    
+  addPrinter() {
+    // this.setState(prevState => ({data: [...prevState.data, newData]}))    
+    this.setState({ show: true })
   }
-
+  handlePrinterRemove(data) {
+    let tmpArray = [...this.state.data];
+    let elementIndex = this.state.data.findIndex(element => element.id === data.id);
+    tmpArray = [
+      ...tmpArray.slice(0, elementIndex),
+      ...tmpArray.slice(elementIndex + 1)
+    ]
+    this.setState({ data: tmpArray })
+    this.handleModalClose();
+  }
   handleModalClose() {
-    this.setState({ show: false })
+    this.setState({ show: false, activePrinter: {} })
   }
-
   handleModalSubmit(newData) {
     this.updatePrinterList(newData)
     this.handleModalClose();
   }
-
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Print Manager</h1>
+          {/* <h1 className="App-title">Print Manager</h1> */}
         </header>
+        <button className={'btn btn-primary'} onClick={() => this.addPrinter()}>Add</button>
         <ReactTable
           data={this.state.data}
           filterable
@@ -114,6 +126,7 @@ class App extends Component {
           show={this.state.show}
           data={this.state.activePrinter}
           onSubmit={data => this.handleModalSubmit(data)}
+          onRemove={data => this.handlePrinterRemove(data)}
           onClose={() => this.handleModalClose()} />
       </div>
     );

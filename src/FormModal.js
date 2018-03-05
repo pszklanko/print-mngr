@@ -6,9 +6,11 @@ export class FormModal extends Component {
     handleClose() {
         this.props.onClose();
     }
-
     handleSubmit(data) {
         this.props.onSubmit(data);
+    }
+    handleRemove() {
+        this.props.onRemove(this.props.data);
     }
     render() {
         return (
@@ -17,7 +19,7 @@ export class FormModal extends Component {
                     <Modal.Title>Printer {this.props.data.id}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <PrinterForm data={this.props.data} onSubmit={(data) => this.handleSubmit(data)}/>
+                    <PrinterForm data={this.props.data} onSubmit={(data) => this.handleSubmit(data)} onRemove={() => this.handleRemove()}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={() => this.handleClose()}>Close</Button>
