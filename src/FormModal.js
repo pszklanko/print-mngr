@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { PrinterForm } from './PrinterForm'
+import { ReportGenerator } from './ReportGenerator'
 
 export class FormModal extends Component {
     handleClose() {
