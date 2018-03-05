@@ -1,0 +1,34 @@
+[
+    {
+        "name": "printer01",
+        "status": "idle",
+        "ipAddress": "192.168.43.07",
+        "description": "my printer",
+        "permissions": "admin",
+        "color": true
+    },
+    {
+        "name": "best printer",
+        "status": "broken",
+        "ipAddress": "192.168.42.01",
+        "description": "bla bla bla",
+        "permissions": "all",
+        "color": false
+    },
+    {
+        "name": "pink printer",
+        "status": "printing",
+        "ipAddress": "192.168.03.04",
+        "description": "wnfeown w ef oenf oeiwnfe",
+        "permissions": "group",
+        "color": true
+    },
+    {
+        "name": "ewqpj wwqpoidjiw dqwdw",
+        "status": "disconnected",
+        "ipAddress": "192.168.32.11",
+        "description": "qwe wqeqw efwefwefew",
+        "permissions": "all",
+        "color": false
+    }
+]

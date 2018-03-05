@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Text, Radio, RadioGroup, TextArea } from 'react-form';
+import { Form, Text, Radio, RadioGroup, TextArea, Checkbox } from 'react-form';
 
 export class PrinterForm extends Component {
     handleSubmit(submittedValues) {
@@ -10,7 +10,7 @@ export class PrinterForm extends Component {
     }
     render() {
         const validateName = value => !value || value.trim() === '' ? 'Name is a required field' : null
-        const validateIpAddress = value => !value || value.trim() === '' ? 'IP address is a required field' : null
+        const validateIpAddress = value => /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value) ? null: 'Invalid IP address'
         return (
             < Form onSubmit={submittedValues => this.handleSubmit(submittedValues)} defaultValues={this.props.data}>
                 {
@@ -35,16 +35,20 @@ export class PrinterForm extends Component {
                                 <Text field="status" id="status" className="form-control" disabled />
                             </div>
                             <RadioGroup field="permissions">
-                                <label htmlFor="admin" className="mr-2">Admin</label>
                                 <Radio value="admin" id="admin" className="mr-3 d-inline-block" />
-                                <label htmlFor="group" className="mr-2">Group</label>
+                                <label htmlFor="admin" className="mr-2">Admin</label>
                                 <Radio value="group" id="group" className="d-inline-block" />
-                                <label htmlFor="all" className="mr-2">All</label>
+                                <label htmlFor="group" className="mr-2">Group</label>
                                 <Radio value="all" id="all" className="d-inline-block" />
+                                <label htmlFor="all" className="mr-2">All</label>
                             </RadioGroup>
                             <div className={'form-group'}>
                                 <label htmlFor="description" className="mb-4 control-label">Description</label>
                                 <TextArea field="description" id="description" className="form-control" />
+                            </div>
+                            <div className={'form-check'}>
+                                <Checkbox field="color" id="color" className="form-check-input" />
+                                <label htmlFor="color" className="mb-4 form-check-label">Color</label>
                             </div>
                             {
                                 this.props.data.status ? (

@@ -7,7 +7,14 @@ input, textarea {
   display: block;
   margin: 5px;
 }
-input[type=radio] {
+input[type=radio], input[type=checkbox] {
   display: inline-block;
   margin: 5px;
+}
+.rt-td {
+  cursor: pointer;
+}
+
+.rt-th:focus {
+  outline: none;
 }

@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import { FormModal } from './FormModal'
+import { Button, Glyphicon } from 'react-bootstrap';
 import './App.css';
+
+const data = require('./printers.json')
 
 class App extends Component {
   constructor(props) {
@@ -10,45 +13,12 @@ class App extends Component {
     this.state = {
       show: false,
       activePrinter: {},
-      data: [
-        {
-          id: 1,
-          name: 'printer01',
-          status: 'idle',
-          ipAddress: '192.168.43.07',
-          description: 'my printer',
-          permissions: 'admin',
-        },
-        {
-          id: 2,
-          name: 'best printer',
-          status: 'broken',
-          ipAddress: '192.168.42.01',
-          description: 'bla bla bla',
-          permissions: 'all',
-        },
-        {
-          id: 3,
-          name: 'pink printer',
-          status: 'printing',
-          ipAddress: '192.168.03.04',
-          description: 'wnfeown w ef oenf oeiwnfe',
-          permissions: 'group',
-        },
-        {
-          id: 4,
-          name: 'ewqpj wwqpoidjiw dqwdw',
-          status: 'disconnected',
-          ipAddress: '192.168.32.11',
-          description: 'qwe wqeqw efwefwefew',
-          permissions: 'all',
-        }
-      ]
+      data: data,
     }
   }
   updatePrinterList(newData) {
     let tmpArray = [...this.state.data];
-    let elementIndex = this.state.data.findIndex(element => element.id === newData.id);
+    let elementIndex = this.state.data.findIndex(element => element.ipAddress === newData.ipAddress);
     if (elementIndex >= 0) {
       tmpArray[elementIndex] = newData;
     } else {
@@ -82,9 +52,11 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          {/* <h1 className="App-title">Print Manager</h1> */}
+          <h1 className="App-title">Print Manager</h1>
+          <Button bsSize="large" onClick={() => this.addPrinter()}>
+            <Glyphicon glyph="plus" />
+          </Button>
         </header>
-        <button className={'btn btn-primary'} onClick={() => this.addPrinter()}>Add</button>
         <ReactTable
           data={this.state.data}
           filterable
@@ -97,10 +69,6 @@ class App extends Component {
           }}
           defaultFilterMethod={(filter, row) => String(row[filter.id]).includes(filter.value)}
           columns={[
-            {
-              Header: "Id",
-              accessor: "id"
-            },
             {
               Header: "Name",
               accessor: "name"

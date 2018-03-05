@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { PrinterForm } from './PrinterForm'
 
 export class ReportGenerator extends Component {
     generateFile() {
@@ -12,7 +10,7 @@ export class ReportGenerator extends Component {
     }
     render() {
         return (
-            <a className={'btn btn-default'} href={this.generateFile()} download>Download report</a>
+            <a className={'btn btn-default ' + this.props.className}  href={this.generateFile()} download>Download report</a>
         )
     }
 }
