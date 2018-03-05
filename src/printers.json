@@ -1,5 +1,6 @@
 [
     {
+        "hash": 654321,
         "name": "printer01",
         "status": "idle",
         "ipAddress": "192.168.43.07",
@@ -8,6 +9,7 @@
         "color": true
     },
     {
+        "hash": 123456,
         "name": "best printer",
         "status": "broken",
         "ipAddress": "192.168.42.01",
@@ -16,6 +18,7 @@
         "color": false
     },
     {
+        "hash": 234567,
         "name": "pink printer",
         "status": "printing",
         "ipAddress": "192.168.03.04",
@@ -24,6 +27,7 @@
         "color": true
     },
     {
+        "hash": 765432,
         "name": "ewqpj wwqpoidjiw dqwdw",
         "status": "disconnected",
         "ipAddress": "192.168.32.11",

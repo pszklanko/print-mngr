@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Text, Radio, RadioGroup, TextArea, Checkbox } from 'react-form';
 
 export class PrinterForm extends Component {
+    availablePermissions = ['admin', 'group', 'all']
     _onSubmit(submittedValues) {
         this.props.onSubmit(submittedValues)
     }
@@ -10,20 +11,21 @@ export class PrinterForm extends Component {
     }
     render() {
         const validateName = value => !value || value.trim() === '' ? 'Name is a required field' : null
-        const validateIpAddress = value => /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value) ? null: 'Invalid IP address'
+        const validateIpAddress = value => /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value) ? null : 'Invalid IP address'
+
         return (
             < Form onSubmit={submittedValues => this._onSubmit(submittedValues)} defaultValues={this.props.data}>
                 {
                     formApi => (
                         <form onSubmit={formApi.submitForm} id="form2">
-                            <div className={formApi.errors && formApi.touched.name && formApi.errors.name ? 'form-group has-error' : 'form-group '}>
+                            <div className={'form-group ' + (formApi.errors && formApi.touched.name && formApi.errors.name ? 'has-error' : '')}>
                                 <label htmlFor="name" className="mb-4 control-label">Name</label>
                                 <Text field="name" id="name" className="form-control" validate={validateName} />
                                 <span className="help-block">
                                     {formApi.errors && formApi.touched.name && formApi.errors.name ? formApi.errors.name : ''}
                                 </span>
                             </div>
-                            <div className={formApi.errors && formApi.touched.ipAddress && formApi.errors.ipAddress ? 'form-group has-error' : 'form-group '}>
+                            <div className={'form-group ' + (formApi.errors && formApi.touched.ipAddress && formApi.errors.ipAddress ? 'has-error' : '')}>
                                 <label htmlFor="ipAddress" className="mb-4 control-label">IP address</label>
                                 <Text field="ipAddress" id="ipAddress" className="form-control" validate={validateIpAddress} />
                                 <span className="help-block">
@@ -36,12 +38,13 @@ export class PrinterForm extends Component {
                             </div>
                             <label htmlFor="permissions" className="mb-4 control-label">Permissions</label>
                             <RadioGroup field="permissions">
-                                <Radio value="admin" id="admin" className="mr-3 d-inline-block" />
-                                <label htmlFor="admin" className="mr-2">Admin</label>
-                                <Radio value="group" id="group" className="d-inline-block" />
-                                <label htmlFor="group" className="mr-2">Group</label>
-                                <Radio value="all" id="all" className="d-inline-block" />
-                                <label htmlFor="all" className="mr-2">All</label>
+                                {this.availablePermissions.map((permission, index) => (
+                                    <span key={index}>
+                                        <Radio value={permission} id={permission} className="d-inline-block" />
+                                        <label htmlFor={permission} className="mr-2">{permission[0].toUpperCase() + permission.slice(1)}</label>
+                                    </span>
+                                ))
+                                }
                             </RadioGroup>
                             <div className={'form-group'}>
                                 <label htmlFor="description" className="mb-4 control-label">Description</label>

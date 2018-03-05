@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
-import { FormModal } from './FormModal'
-import { PrinterForm } from './PrinterForm'
+import { FormModal } from './components/FormModal'
+import { PrinterForm } from './components/PrinterForm'
 import { Glyphicon, Nav, NavItem, Alert, Collapse } from 'react-bootstrap';
 
 const data = require('./printers.json')
@@ -16,21 +16,27 @@ class App extends Component {
       data: data,
       activeTab: 'home',
       showAlert: false,
-      alertMsg: ''
+      alertMsg: '',
+      alertType: 'success'
     }
   }
   updatePrinterList(newData) {
     let tmpArray = [...this.state.data];
-    let elementIndex = this.state.data.findIndex(element => element.ipAddress === newData.ipAddress);
-    if (elementIndex >= 0) {
-      tmpArray[elementIndex] = newData;
-      this.handleAlert('Printer edited', 2500)
+    let elementIndex = this.state.data.findIndex(element => element.hash === newData.hash);
+    if (this.state.data.findIndex(element => element.ipAddress === newData.ipAddress) >= 0 && elementIndex < 0) {
+      this.handleAlert('IP address already in use. Unable to add printer.', 'warning', 2500)
     } else {
-      newData.status = 'idle'
-      tmpArray.push(newData);
-      this.handleAlert('Printer added', 2500)
+      if (elementIndex >= 0) {
+        tmpArray[elementIndex] = newData;
+        this.handleAlert('Printer edited', 'success', 2500)
+      } else {
+        newData.status = 'idle'
+        newData.hash = Math.floor(Math.random() * 100000) + 1;
+        tmpArray.push(newData);
+        this.handleAlert('Printer added', 'success', 2500)
+      }
+      this.setState({ data: tmpArray })
     }
-    this.setState({ data: tmpArray })
   }
   addPrinter(data) {
     this.updatePrinterList(data);
@@ -38,13 +44,13 @@ class App extends Component {
   }
   handlePrinterRemove(data) {
     let tmpArray = [...this.state.data];
-    let elementIndex = this.state.data.findIndex(element => element.id === data.id);
+    let elementIndex = this.state.data.findIndex(element => element.hash === data.hash);
     tmpArray = [
       ...tmpArray.slice(0, elementIndex),
       ...tmpArray.slice(elementIndex + 1)
     ]
     this.setState({ data: tmpArray })
-    this.handleAlert('Printer removed', 2500)
+    this.handleAlert('Printer removed', 'success', 2500)
     this.handleModalClose();
   }
   handleModalClose() {
@@ -57,23 +63,23 @@ class App extends Component {
   handleSelect(selectedKey) {
     this.setState({ activeTab: selectedKey })
   }
-  handleShowAlert(msg) {
-    this.setState({ showAlert: true, alertMsg: msg })
+  handleShowAlert(alertMsg, alertType) {
+    this.setState({ showAlert: true, alertMsg, alertType })
   }
   handleDismissAlert() {
     this.setState({ showAlert: false })
   }
-  handleAlert(msg, time) {
-    this.handleShowAlert(msg);
+  handleAlert(msg, type, time) {
+    this.handleShowAlert(msg, type);
     setTimeout(() => this.handleDismissAlert(), time)
   }
   render() {
     return (
       <div className="App">
         <Collapse in={this.state.showAlert}>
-          <Alert bsStyle="success">
-            { this.state.alertMsg }
-        </Alert>
+          <Alert bsStyle={this.state.alertType}>
+            {this.state.alertMsg}
+          </Alert>
         </Collapse>
         <Nav bsStyle="pills" activeKey={this.state.activeTab} onSelect={(activeKey) => this.handleSelect(activeKey)}>
           <NavItem eventKey={'home'}>

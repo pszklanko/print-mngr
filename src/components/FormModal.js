@@ -18,20 +18,14 @@ export class FormModal extends Component {
             <Modal show={this.props.show} onHide={() => this._onClose()}>
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        {this.props.data.status ? 'Edit printer' : 'Add printer'}
+                        Edit printer
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <PrinterForm data={this.props.data} onSubmit={(data) => this._onSubmit(data)} onRemove={() => this._onRemove()} />
                 </Modal.Body>
                 <Modal.Footer>
-                    {
-                        this.props.data.status ? (
-                            <ReportGenerator data={this.props.data} className={'pull-left'} />
-                        ) : (
-                                ''
-                            )
-                    }
+                    <ReportGenerator data={this.props.data} className={'pull-left'} />
                     <Button onClick={() => this._onClose()}>Close</Button>
                 </Modal.Footer>
             </Modal>
