@@ -13,8 +13,22 @@ input[type=radio], input[type=checkbox] {
 }
 .rt-td {
   cursor: pointer;
+  text-align: center;
 }
-
 .rt-th:focus {
   outline: none;
+}
+.alert {
+  z-index: 9999;
+  position: absolute;
+  width: 100vw;
+  text-align: center;
+}
+.form-container {
+  display: flex;
+  justify-content: center;
+}
+
+.form-container form {
+  flex-basis: 50%;
 }

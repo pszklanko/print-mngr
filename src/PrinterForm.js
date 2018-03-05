@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { Form, Text, Radio, RadioGroup, TextArea, Checkbox } from 'react-form';
 
 export class PrinterForm extends Component {
-    handleSubmit(submittedValues) {
+    _onSubmit(submittedValues) {
         this.props.onSubmit(submittedValues)
     }
-    handleRemove() {
+    _onRemove() {
         this.props.onRemove()
     }
     render() {
         const validateName = value => !value || value.trim() === '' ? 'Name is a required field' : null
         const validateIpAddress = value => /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value) ? null: 'Invalid IP address'
         return (
-            < Form onSubmit={submittedValues => this.handleSubmit(submittedValues)} defaultValues={this.props.data}>
+            < Form onSubmit={submittedValues => this._onSubmit(submittedValues)} defaultValues={this.props.data}>
                 {
                     formApi => (
                         <form onSubmit={formApi.submitForm} id="form2">
@@ -34,6 +34,7 @@ export class PrinterForm extends Component {
                                 <label htmlFor="status" className="mb-4 control-label">Status</label>
                                 <Text field="status" id="status" className="form-control" disabled />
                             </div>
+                            <label htmlFor="permissions" className="mb-4 control-label">Permissions</label>
                             <RadioGroup field="permissions">
                                 <Radio value="admin" id="admin" className="mr-3 d-inline-block" />
                                 <label htmlFor="admin" className="mr-2">Admin</label>
@@ -52,7 +53,7 @@ export class PrinterForm extends Component {
                             </div>
                             {
                                 this.props.data.status ? (
-                                    <button type="button" onClick={() => this.handleRemove()} className="mb-4 btn btn-danger">
+                                    <button type="button" onClick={() => this._onRemove()} className="mb-4 btn btn-danger">
                                         Remove
                                     </button>
                                 ) : (

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 export class ReportGenerator extends Component {
-    generateFile() {
+    _generateFile() {
         let textFile = null;
         let data = new Blob([JSON.stringify(this.props.data)], { type: 'text/plain' });
         window.URL.revokeObjectURL(textFile);
@@ -10,7 +10,7 @@ export class ReportGenerator extends Component {
     }
     render() {
         return (
-            <a className={'btn btn-default ' + this.props.className}  href={this.generateFile()} download>Download report</a>
+            <a className={'btn btn-default ' + this.props.className}  href={this._generateFile()} download>Download report</a>
         )
     }
 }

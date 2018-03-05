@@ -4,25 +4,25 @@ import { PrinterForm } from './PrinterForm'
 import { ReportGenerator } from './ReportGenerator'
 
 export class FormModal extends Component {
-    handleClose() {
+    _onClose() {
         this.props.onClose();
     }
-    handleSubmit(data) {
+    _onSubmit(data) {
         this.props.onSubmit(data);
     }
-    handleRemove() {
+    _onRemove() {
         this.props.onRemove(this.props.data);
     }
     render() {
         return (
-            <Modal show={this.props.show} onHide={() => this.handleClose()}>
+            <Modal show={this.props.show} onHide={() => this._onClose()}>
                 <Modal.Header closeButton>
                     <Modal.Title>
                         {this.props.data.status ? 'Edit printer' : 'Add printer'}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <PrinterForm data={this.props.data} onSubmit={(data) => this.handleSubmit(data)} onRemove={() => this.handleRemove()} />
+                    <PrinterForm data={this.props.data} onSubmit={(data) => this._onSubmit(data)} onRemove={() => this._onRemove()} />
                 </Modal.Body>
                 <Modal.Footer>
                     {
@@ -32,7 +32,7 @@ export class FormModal extends Component {
                                 ''
                             )
                     }
-                    <Button onClick={() => this.handleClose()}>Close</Button>
+                    <Button onClick={() => this._onClose()}>Close</Button>
                 </Modal.Footer>
             </Modal>
         )

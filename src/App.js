@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import { FormModal } from './FormModal'
-import { Button, Glyphicon } from 'react-bootstrap';
-import './App.css';
+import { PrinterForm } from './PrinterForm'
+import { Glyphicon, Nav, NavItem, Alert, Collapse } from 'react-bootstrap';
 
 const data = require('./printers.json')
 
@@ -14,6 +14,9 @@ class App extends Component {
       show: false,
       activePrinter: {},
       data: data,
+      activeTab: 'home',
+      showAlert: false,
+      alertMsg: ''
     }
   }
   updatePrinterList(newData) {
@@ -21,15 +24,17 @@ class App extends Component {
     let elementIndex = this.state.data.findIndex(element => element.ipAddress === newData.ipAddress);
     if (elementIndex >= 0) {
       tmpArray[elementIndex] = newData;
+      this.handleAlert('Printer edited', 2500)
     } else {
       newData.status = 'idle'
       tmpArray.push(newData);
+      this.handleAlert('Printer added', 2500)
     }
     this.setState({ data: tmpArray })
   }
-  addPrinter() {
-    // this.setState(prevState => ({data: [...prevState.data, newData]}))    
-    this.setState({ show: true })
+  addPrinter(data) {
+    this.updatePrinterList(data);
+    this.setState({ activeTab: 'home', activePrinter: {} });
   }
   handlePrinterRemove(data) {
     let tmpArray = [...this.state.data];
@@ -39,6 +44,7 @@ class App extends Component {
       ...tmpArray.slice(elementIndex + 1)
     ]
     this.setState({ data: tmpArray })
+    this.handleAlert('Printer removed', 2500)
     this.handleModalClose();
   }
   handleModalClose() {
@@ -48,15 +54,35 @@ class App extends Component {
     this.updatePrinterList(newData)
     this.handleModalClose();
   }
+  handleSelect(selectedKey) {
+    this.setState({ activeTab: selectedKey })
+  }
+  handleShowAlert(msg) {
+    this.setState({ showAlert: true, alertMsg: msg })
+  }
+  handleDismissAlert() {
+    this.setState({ showAlert: false })
+  }
+  handleAlert(msg, time) {
+    this.handleShowAlert(msg);
+    setTimeout(() => this.handleDismissAlert(), time)
+  }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Print Manager</h1>
-          <Button bsSize="large" onClick={() => this.addPrinter()}>
-            <Glyphicon glyph="plus" />
-          </Button>
-        </header>
+        <Collapse in={this.state.showAlert}>
+          <Alert bsStyle="success">
+            { this.state.alertMsg }
+        </Alert>
+        </Collapse>
+        <Nav bsStyle="pills" activeKey={this.state.activeTab} onSelect={(activeKey) => this.handleSelect(activeKey)}>
+          <NavItem eventKey={'home'}>
+            <Glyphicon glyph="home" /> Home
+            </NavItem>
+          <NavItem eventKey={'add'}>
+            <Glyphicon glyph="plus" /> Add
+            </NavItem>
+        </Nav>
         <ReactTable
           data={this.state.data}
           filterable
@@ -88,8 +114,11 @@ class App extends Component {
 
           ]}
           defaultPageSize={10}
-          className="-striped -highlight"
+          className={"-striped -highlight " + (this.state.activeTab !== 'home' ? 'hidden' : '')}
         />
+        <div className={'form-container ' + (this.state.activeTab !== 'add' ? 'hidden' : '')}>
+          <PrinterForm data={this.state.activePrinter} onSubmit={(data) => this.addPrinter(data)} />
+        </div>
         <FormModal
           show={this.state.show}
           data={this.state.activePrinter}
